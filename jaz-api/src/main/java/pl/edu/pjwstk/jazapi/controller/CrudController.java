@@ -1,14 +1,19 @@
 package pl.edu.pjwstk.jazapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import pl.edu.pjwstk.jazapi.model.PageInfo;
 import pl.edu.pjwstk.jazapi.service.CrudService;
 import pl.edu.pjwstk.jazapi.service.DbEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,13 +26,38 @@ public abstract class CrudController<T extends DbEntity> {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Map<String, Object>>> getAll() {
+    public ResponseEntity<List<Map<String, Object>>>
+    getAll(Optional<Integer> page, Optional<Integer> size, Optional<String[]> sort) {
         try {
-            List<T> all = service.getAll();
-            List<Map<String, Object>> payload = all.stream()
+            String sortBy = "id";
+            String sortDirection = "asc";
+
+            if(sort.isPresent()){
+                sortDirection=sort.get()[0];
+                sortBy=sort.get()[1];
+            }
+
+            PageInfo info = new PageInfo(
+                    page.orElse(0),
+                    size.orElse(4),
+                    service.count(),
+                    sortDirection,
+                    sortBy
+            );
+
+            PageRequest request = PageRequest.of(
+                    info.getPage(),
+                    info.getSize(),
+                    Sort.by(
+                            Sort.Direction.fromString(info.getSortingDirection()),
+                            info.getSortedBy()
+                    )
+            );
+            List<Map<String, Object>> payload = service.getAll(request)
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
-
+//
+            payload.add(info.map());
             return new ResponseEntity<>(payload, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
