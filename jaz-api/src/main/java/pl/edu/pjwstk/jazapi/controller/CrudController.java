@@ -27,37 +27,34 @@ public abstract class CrudController<T extends DbEntity> {
 
     @GetMapping()
     public ResponseEntity<List<Map<String, Object>>>
-    getAll(Optional<Integer> page, Optional<Integer> size, Optional<String[]> sort) {
+    getAll(
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "4", name = "size") int size,
+            @RequestParam(defaultValue = "asc,id", name = "sort") String sort
+    ) {
         try {
-            String sortBy = "id";
-            String sortDirection = "asc";
-
-            if(sort.isPresent()){
-                sortDirection=sort.get()[0];
-                sortBy=sort.get()[1];
-            }
+            String sortDirection = sort.split(",")[0];
+            String sortBy = sort.split(",")[1];
 
             PageInfo info = new PageInfo(
-                    page.orElse(0),
-                    size.orElse(4),
+                    page,
+                    size,
                     service.count(),
                     sortDirection,
                     sortBy
             );
 
             PageRequest request = PageRequest.of(
-                    info.getPage(),
-                    info.getSize(),
-                    Sort.by(
-                            Sort.Direction.fromString(info.getSortingDirection()),
-                            info.getSortedBy()
-                    )
+                    page,
+                    size,
+                    Sort.by(Sort.Direction.fromString(sortDirection), sortBy)
             );
-            List<Map<String, Object>> payload = service.getAll(request)
+
+            var payload = service.getAll(request)
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
-//
             payload.add(info.map());
+
             return new ResponseEntity<>(payload, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
