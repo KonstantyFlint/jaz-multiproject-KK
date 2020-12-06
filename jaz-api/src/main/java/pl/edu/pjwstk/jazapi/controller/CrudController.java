@@ -53,6 +53,7 @@ public abstract class CrudController<T extends DbEntity> {
             var payload = service.getAll(request)
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
+
             payload.add(info.map());
 
             return new ResponseEntity<>(payload, HttpStatus.OK);
