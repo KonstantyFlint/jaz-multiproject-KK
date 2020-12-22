@@ -7,19 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import pl.edu.pjwstk.jazapi.model.PageInfo;
 import pl.edu.pjwstk.jazapi.service.CrudService;
 import pl.edu.pjwstk.jazapi.service.DbEntity;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class CrudController<T extends DbEntity> {
     @Autowired
-    private final CrudService<T> service;
+    protected final CrudService<T> service;
 
     public CrudController(CrudService<T> service) {
         this.service = service;
@@ -36,14 +34,6 @@ public abstract class CrudController<T extends DbEntity> {
             String sortDirection = sort.split(",")[0];
             String sortBy = sort.split(",")[1];
 
-            PageInfo info = new PageInfo(
-                    page,
-                    size,
-                    service.count(),
-                    sortDirection,
-                    sortBy
-            );
-
             PageRequest request = PageRequest.of(
                     page,
                     size,
@@ -53,16 +43,13 @@ public abstract class CrudController<T extends DbEntity> {
             var payload = service.getAll(request)
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
-
-            payload.add(info.map());
-
             return new ResponseEntity<>(payload, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Map<String, Object>> getById(@PathVariable("id") Long id) {
         try {
             T obj = service.getById(id);

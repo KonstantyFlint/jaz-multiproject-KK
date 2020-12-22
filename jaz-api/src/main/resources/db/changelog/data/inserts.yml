@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 22.12.2020-initial-inserts
+      author:  konstanty.kamień
+      changes:
+        - sqlFile:
+            path: db/changelog/data/insert-trains.sql
+        - sqlFile:
+            path: db/changelog/data/insert-carts.sql

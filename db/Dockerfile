@@ -1,3 +1,3 @@
 FROM mysql
-ENV MYSQL_DATABASE carseller
+ENV MYSQL_DATABASE traindb
 COPY ./sql-scripts/ /docker-entrypoint-initdb.d/

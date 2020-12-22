@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 22.12.2020-tables
+      author:  konstanty.kamień
+      changes:
+        - sqlFile:
+            path: db/changelog/tables/init.sql

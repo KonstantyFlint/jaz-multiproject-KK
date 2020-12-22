@@ -6,20 +6,20 @@ services:
       - "11111:11111"
     restart: on-failure:5
     depends_on:
-      - cardb
+      - traindb
   jazclient:
     build: ./jaz-client
     ports:
       - "22222:22222"
     depends_on:
       - jazapi
-  cardb:
+  traindb:
     build: ./db
     ports:
       - "3306:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: pwd
-      MYSQL_DATABASE: carseller
+      MYSQL_DATABASE: traindb
       MYSQL_USER: salesman
       MYSQL_PASSWORD: pwd
