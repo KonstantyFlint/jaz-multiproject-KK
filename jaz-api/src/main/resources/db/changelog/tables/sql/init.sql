@@ -1,6 +1,3 @@
-DROP TABLE IF EXISTS carts;
-DROP TABLE IF EXISTS trains;
-
 CREATE TABLE trains (
     id              INT AUTO_INCREMENT,
     station         INT NOT NULL,

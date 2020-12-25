@@ -4,4 +4,6 @@ databaseChangeLog:
       author:  konstanty.kamień
       changes:
         - sqlFile:
-            path: db/changelog/tables/init.sql
+            path: db/changelog/tables/sql/drop.sql
+        - sqlFile:
+            path: db/changelog/tables/sql/init.sql

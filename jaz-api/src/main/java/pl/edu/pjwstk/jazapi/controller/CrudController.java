@@ -1,6 +1,5 @@
 package pl.edu.pjwstk.jazapi.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class CrudController<T extends DbEntity> {
-    @Autowired
     protected final CrudService<T> service;
 
     public CrudController(CrudService<T> service) {

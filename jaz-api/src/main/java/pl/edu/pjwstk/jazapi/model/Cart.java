@@ -30,7 +30,7 @@ public class Cart implements DbEntity {
     }
 
     public void setPeople(Set<Person> people) {
-        this.people = people;
+        this.people = new HashSet<>(people);
     }
 
     public int getCapacity() {
@@ -69,7 +69,7 @@ public class Cart implements DbEntity {
         this.train = train;
     }
 
-    boolean accept(Person person){
+    public boolean accept(Person person){
         if(isFull())return false;
         people.forEach(p-> System.out.println(p.getName()+" "+p.getSurname()));
         return people.add(person);

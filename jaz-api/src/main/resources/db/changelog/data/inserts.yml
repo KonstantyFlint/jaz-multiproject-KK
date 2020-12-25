@@ -4,6 +4,6 @@ databaseChangeLog:
       author:  konstanty.kamień
       changes:
         - sqlFile:
-            path: db/changelog/data/insert-trains.sql
+            path: db/changelog/data/sql/insert-trains.sql
         - sqlFile:
-            path: db/changelog/data/insert-carts.sql
+            path: db/changelog/data/sql/insert-carts.sql

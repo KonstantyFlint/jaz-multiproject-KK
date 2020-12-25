@@ -23,6 +23,10 @@ public class Train implements DbEntity {
 
     private int cooldown = 0;
 
+    public void noCooldown(){
+        cooldown=0;
+    }
+
     private boolean forward = true;
 
     public boolean getForward() {
@@ -42,11 +46,11 @@ public class Train implements DbEntity {
     }
 
     public void move() {
+        letOut();
         if (cooldown > 0) {
             cooldown--;
             return;
         }
-        letOut();
         letIn(personFactory.limitedStream(2, 8));
         if (forward) station++;
         else station--;

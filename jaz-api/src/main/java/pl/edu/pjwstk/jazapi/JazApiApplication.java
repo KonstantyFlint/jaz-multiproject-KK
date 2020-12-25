@@ -9,5 +9,4 @@ public class JazApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JazApiApplication.class, args);
 	}
-
 }

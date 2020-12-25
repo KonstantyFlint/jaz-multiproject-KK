@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import static pl.edu.pjwstk.jazapi.util.Utils.randomLong;
 import static pl.edu.pjwstk.jazapi.util.Utils.randomMember;
 
 public class PersonFactory {
     private static Random random = new Random();
-    private static List<String> nameList = List.of("Adam", "Bernard", "C");
-    private static List<String> surnameList = List.of("AAA", "BBB", "ĄĄĄ");
+    private static List<String> nameList = List.of("Arnold", "Bernard", "Czesław", "Damian", "Edward", "Franek", "Grzegoż");
+    private static List<String> surnameList = List.of("Kowalski", "Marley", "Kimono", "Stachura", "Schwarzenegger");
     private Train train;
 
     PersonFactory(Train train) {
@@ -21,8 +22,8 @@ public class PersonFactory {
                 randomMember(nameList),
                 randomMember(surnameList),
                 train.getForward() ?
-                        random.nextLong() % (train.getLastStation() - train.getStation()) + train.getStation() :
-                        random.nextLong() % train.getStation()
+                        randomLong(train.getStation() + 1, train.getLastStation()) :
+                        randomLong(0L, train.getStation() - 1)
         );
     }
 
