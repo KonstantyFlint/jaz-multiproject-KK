@@ -1,6 +1,6 @@
 package pl.edu.pjwstk.jazapi.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pjwstk.jazapi.model.Train;
@@ -19,7 +19,7 @@ public class TrainController extends CrudController<Train> {
         super(service);
     }
 
-    @GetMapping("/move")
+    @PostMapping("/move")
     public void move(){
         var trains = service.getAll().collect(Collectors.toList());
         trains.forEach(Train::move);

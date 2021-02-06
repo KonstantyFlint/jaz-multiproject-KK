@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 public class User implements UserDetails {
     private String username;
@@ -20,6 +21,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(authorities==null)authorities= List.of(()->"ROLE_POTATO");
         return authorities;
     }
 
@@ -63,5 +65,15 @@ public class User implements UserDetails {
 
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        User _other = (User)other;
+        return
+                authorities.containsAll(_other.authorities)
+                && _other.authorities.containsAll(authorities)
+                && password.equals(_other.password)
+                && username.equals(_other.username);
     }
 }

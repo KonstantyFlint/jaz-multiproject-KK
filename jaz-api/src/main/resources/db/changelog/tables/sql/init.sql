@@ -16,3 +16,11 @@ CREATE TABLE carts (
         REFERENCES trains(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE users (
+    id          int auto_increment,
+    username varchar(300),
+    password varchar(300),
+    authorities varchar(300),
+    PRIMARY KEY (id)
+);

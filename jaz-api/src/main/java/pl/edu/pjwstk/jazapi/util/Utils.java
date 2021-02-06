@@ -1,9 +1,11 @@
 package pl.edu.pjwstk.jazapi.util;
 
-import java.util.Collection;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pjwstk.jazapi.model.UserModel;
+
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Utils {
     private static Random random = new Random();
@@ -19,5 +21,18 @@ public class Utils {
     public static Long randomLong(Long min, Long max){
         Long range = max - min + 1;
         return Math.abs(random.nextLong()) % range + min;
+    }
+    public static void adminjson(){
+        UserModel model = new UserModel();
+        model.setUsername("admin");
+        model.setPassword("admin");
+        model.setAuthorities("ROLE_ADMIN");
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            System.out.println(mapper.writeValueAsString(mapper));
+        } catch (JsonProcessingException e) {
+            System.out.println("asdasfchuj kurwa dipa");
+        }
     }
 }
