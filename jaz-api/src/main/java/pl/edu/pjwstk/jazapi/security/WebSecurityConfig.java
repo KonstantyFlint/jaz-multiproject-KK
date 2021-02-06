@@ -15,9 +15,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.GET,"/**").hasAnyAuthority("PRIVILEGED", "ADMIN","USER")
+                .antMatchers(HttpMethod.GET,"trains/**, carts/**").hasAnyAuthority("PRIVILEGED", "ADMIN","USER")
                 .antMatchers("trains/**", "carts/**").hasAnyAuthority("PRIVILEGED", "ADMIN")
-                .antMatchers("/**").hasAuthority("ADMIN")
+                .antMatchers("users/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                     .addFilter(new TokenAuthenticationFilter(authenticationManager()))

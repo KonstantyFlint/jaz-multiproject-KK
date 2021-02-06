@@ -33,17 +33,17 @@ public class UserService implements UserDetailsService {
     public boolean register(User user){
         if(users.findByUsername(user.getUsername()).size()>0)return false;
         UserModel dbModel = new UserModel(user);
-        dbModel.setPassword(passwordEncoder.encode(user.getPassword()));
-        users.save(dbModel);
+        encodeAndInsert(dbModel);
         System.out.println("registered:    "+user.getUsername());
         return true;
     }
 
     public boolean update(User user){
-        if(users.findByUsername(user.getUsername()).size()==0)return false;
+        var replacedUser = users.findByUsername(user.getUsername());
+        if(replacedUser.size()==0)return false;
         UserModel dbModel = new UserModel(user);
-        dbModel.setPassword(passwordEncoder.encode(user.getPassword()));
-        users.save(dbModel);
+        dbModel.setId(replacedUser.get(0).getId());
+        encodeAndInsert(dbModel);
         System.out.println("updated:    "+user.getUsername());
         return true;
     }
@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
             for(UserModel user : users) encodeAndInsert(user);
 
         }catch (Exception e){
-            throw new Exception("FAILED TO SET UP USERS, you've fucked up users.json, good luck inserting by hand");
+            throw new Exception("FAILED TO INITIALISE USERS, you've fucked up users.json, good luck inserting by hand");
         }
     }
 }
